@@ -28,14 +28,13 @@ jobs:
 
       - name: Deploy to Azure Static Web Apps
         uses: azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_API_TOKEN
- }}
+        with: 
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_API_TOKEN}}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: upload
-          app_location: "/"        # path to Astro app (e.g., "/" or "site")
-          output_location: "dist"  # Astro build output
-          api_location: ""         # set to "api" later if you add Azure Functions
+          app_location: "/"
+          output_location: "dist"
+          api_location: ""
 
   close_pr_env:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -43,6 +42,5 @@ jobs:
     steps:
       - uses: azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_API_TOKEN
- }}
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_API_TOKEN}}
           action: close
