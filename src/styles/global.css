@@ -1,9 +1,8 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@custom-variant dark (&:is(.dark *));
-
-@theme inline {
+:root {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -43,24 +42,24 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --color-background: 255 255 255;    /* White */
+  --color-foreground: 37 37 37;       /* Near black */
+  --color-card: 255 255 255;          /* White */
+  --color-card-foreground: 37 37 37;  /* Near black */
+  --color-popover: 255 255 255;       /* White */
+  --color-popover-foreground: 37 37 37; /* Near black */
+  --color-primary: 52 52 52;          /* Dark gray */
+  --color-primary-foreground: 251 251 251; /* Near white */
+  --color-secondary: 247 247 247;     /* Light gray */
+  --color-secondary-foreground: 52 52 52; /* Dark gray */
+  --color-muted: 247 247 247;         /* Light gray */
+  --color-muted-foreground: 142 142 142; /* Medium gray */
+  --color-accent: 247 247 247;        /* Light gray */
+  --color-accent-foreground: 52 52 52; /* Dark gray */
+  --color-destructive: 239 68 68;     /* Red */
+  --color-border: 235 235 235;        /* Light gray */
+  --color-input: 235 235 235;         /* Light gray */
+  --color-ring: 181 181 181;          /* Medium gray */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -112,7 +111,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-none ring-ring/50;
   }
   body {
     @apply bg-background text-foreground;
