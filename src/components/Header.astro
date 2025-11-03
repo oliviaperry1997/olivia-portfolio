@@ -1,0 +1,46 @@
+---
+export interface Props {
+  siteTitle?: string;
+  nav?: { label: string; href: string }[];
+  class?: string;
+  className?: string;
+}
+
+const {
+  siteTitle = "Olivia Perry",
+  nav = [
+    { label: "Home", href: "/" },
+    { label: "Projects", href: "/projects" },
+    { label: "About", href: "/about" },
+    { label: "Contact", href: "/contact" },
+  ],
+  class: classProp,
+  className: classNameProp,
+} = Astro.props;
+
+const headerClass = classProp ?? classNameProp ?? 'bg-white border-b border-[rgba(0,0,0,0.06)]';
+---
+
+<header class={headerClass}>
+	<div class="max-w-6xl mx-auto p-4 flex items-center justify-between">
+		<a class="flex items-center gap-3 no-underline text-current" href="/">
+			<span class="inline-flex items-center justify-center w-9 h-9 bg-[#111827] text-white rounded-md font-bold text-sm" aria-hidden="true">OP</span>
+			<span class="text-lg font-semibold">{siteTitle}</span>
+		</a>
+
+		<nav class="main-nav" aria-label="Main navigation">
+			<ul class="hidden sm:flex gap-4 list-none m-0 p-0">
+				{nav.map((item) => (
+					<li>
+						<a
+							class="text-current no-underline px-2 py-1 rounded font-medium hover:bg-[rgba(0,0,0,0.04)] focus:bg-[rgba(0,0,0,0.04)]"
+							href={item.href}
+						>
+							{item.label}
+						</a>
+					</li>
+				))}
+			</ul>
+		</nav>
+	</div>
+</header>
