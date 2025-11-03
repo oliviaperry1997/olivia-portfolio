@@ -1,25 +1,19 @@
 ---
 export interface Props {
-  siteTitle?: string;
-  nav?: { label: string; href: string }[];
-  class?: string;
-  className?: string;
+	siteTitle?: string;
+	nav?: { label: string; href: string }[];
 }
 
 const {
-  siteTitle = "Olivia Perry",
-  nav = [
-    { label: "Home", href: "/" },
-    { label: "About", href: "/about" },
-  ],
-  class: classProp,
-  className: classNameProp,
+	siteTitle = "Olivia Perry",
+	nav = [
+		{ label: "Home", href: "/" },
+		{ label: "About", href: "/about" },
+	],
 } = Astro.props;
-
-const headerClass = classProp ?? classNameProp ?? 'bg-white border-b border-[rgba(0,0,0,0.06)]';
 ---
 
-<header class={headerClass}>
+<header class="bg-white border-b border-[rgba(0,0,0,0.06)]">
 	<div class="max-w-6xl mx-auto p-4 flex items-center justify-between">
 		<a class="flex items-center gap-3 no-underline text-current" href="/">
 			<span class="inline-flex items-center justify-center w-9 h-9 bg-[#111827] text-white rounded-md font-bold text-sm" aria-hidden="true">OP</span>
