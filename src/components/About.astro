@@ -1,5 +1,50 @@
 ---
+// Import SVG files
+import htmlIcon from '../assets/icons/html5.svg';
+import cssIcon from '../assets/icons/css3.svg';
+import jsIcon from '../assets/icons/javascript.svg';
+import reactIcon from '../assets/icons/react.svg';
+import nodeIcon from '../assets/icons/nodejs.svg';
+import expressIcon from '../assets/icons/express.svg';
+import astroIcon from '../assets/icons/astro.svg';
+import tailwindIcon from '../assets/icons/tailwindcss.svg';
+import gitIcon from '../assets/icons/git.svg';
+import npmIcon from '../assets/icons/npm.svg';
+import postgresIcon from '../assets/icons/postgresql.svg';
+import vscodeIcon from '../assets/icons/visualstudiocode.svg';
+import type { ImageMetadata } from 'astro';
 
+const {
+    skills = [
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+        "React",
+        "Node.js",
+        "Express",
+        "Astro",
+        "Tailwind",
+        "Git",
+        "VS Code",
+        "NPM",
+        "PostgreSQL",
+    ],
+} = Astro.props;
+
+const icons: Partial<Record<string, ImageMetadata>> = {
+    HTML5: htmlIcon,
+    CSS3: cssIcon,
+    JavaScript: jsIcon,
+    React: reactIcon,
+    'Node.js': nodeIcon,
+    Express: expressIcon,
+    Astro: astroIcon,
+    Tailwind: tailwindIcon,
+    Git: gitIcon,
+    'VS Code': vscodeIcon,
+    NPM: npmIcon,
+    PostgreSQL: postgresIcon,
+};
 ---
 
 <div class="max-w-3xl mx-auto px-4 py-16">
@@ -10,4 +55,29 @@
         back-end technologies—and I'm eager to learn and adopt new tools and
         practices.
     </p>
+
+    <section aria-labelledby="skills-heading" class="mt-10">
+        <h2 id="skills-heading" class="text-2xl font-semibold mb-4">Skills</h2>
+
+        <ul
+            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 list-none p-0 m-0"
+        >
+            {
+                skills.map((skill: string) => (
+                    <li class="flex flex-col items-center gap-2 p-3 rounded-md bg-white/3 dark:bg-black/5">
+                        <span class="w-[64px] h-[64px] flex items-center justify-center rounded-md shrink-0 text-black">
+                            {icons[skill] ? (
+                                <img src={icons[skill].src} alt={skill + ' logo'} width="64" height="64" class="object-contain" />
+                            ) : (
+                                <div class="w-16 h-16 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md">
+                                    <span class="text-xs text-gray-400">Icon<br/>Loading</span>
+                                </div>
+                            )}
+                        </span>
+                        <span class="text-base mt-2 text-center">{skill}</span>
+                    </li>
+                ))
+            }
+        </ul>
+    </section>
 </div>

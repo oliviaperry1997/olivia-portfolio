@@ -3,10 +3,11 @@
   "type": "module",
   "version": "0.0.3",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+  "dev": "astro dev",
+  "build": "astro build",
+  "preview": "astro preview",
+  "fetch-icons": "node scripts/fetch-icons.js",
+  "astro": "astro"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.1",
