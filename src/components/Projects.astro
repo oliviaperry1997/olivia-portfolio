@@ -1,0 +1,96 @@
+---
+interface Project {
+    name: string;
+    url: string;
+    description: string;
+    technologies: string[];
+}
+
+const {
+    projects = [
+        {
+            name: "E-Commerce Platform",
+            url: "https://github.com/username/ecommerce-platform",
+            description: "A full-stack e-commerce application built with React, Node.js, and PostgreSQL. Features include user authentication, product catalog, shopping cart, and secure payment processing.",
+            technologies: ["React", "Node.js", "Express", "PostgreSQL", "Tailwind"],
+        },
+        {
+            name: "Task Management App",
+            url: "https://github.com/username/task-manager",
+            description: "A collaborative task management tool with real-time updates. Users can create projects, assign tasks, set deadlines, and track progress with an intuitive dashboard.",
+            technologies: ["React", "Node.js", "MongoDB", "Socket.io"],
+        },
+        {
+            name: "Weather Dashboard",
+            url: "https://github.com/username/weather-dashboard",
+            description: "A responsive weather application that displays current conditions and forecasts using the OpenWeather API. Features location search, favorite cities, and weather alerts.",
+            technologies: ["JavaScript", "HTML5", "CSS3", "REST API"],
+        },
+        {
+            name: "Portfolio Website",
+            url: "https://github.com/username/portfolio",
+            description: "A modern, accessible portfolio website built with Astro and Tailwind CSS. Optimized for performance with server-side rendering and minimal JavaScript.",
+            technologies: ["Astro", "Tailwind", "TypeScript"],
+        },
+    ],
+} = Astro.props;
+---
+
+<div class="max-w-3xl mx-auto px-4 py-16">
+    <h1 class="text-4xl font-bold mb-6">Projects</h1>
+    <p class="mb-8">
+        Here are some of the projects I've built to demonstrate my skills in
+        full-stack web development. Each project showcases different
+        technologies and problem-solving approaches.
+    </p>
+
+    <div class="space-y-8">
+        {
+            projects.map((project: Project) => (
+                <article class="p-6 rounded-lg bg-white/5 dark:bg-black/10 border border-gray-200/10 hover:border-gray-200/30 transition-colors">
+                    <div class="flex items-start justify-between gap-4 mb-3">
+                        <h2 class="text-2xl font-semibold">
+                            <a
+                                href={project.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                            >
+                                {project.name}
+                            </a>
+                        </h2>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="shrink-0 mt-1 text-gray-400"
+                            aria-hidden="true"
+                        >
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                            <polyline points="15 3 21 3 21 9" />
+                            <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
+                    </div>
+
+                    <p class="mb-4 text-gray-700 dark:text-gray-300 leading-relaxed">
+                        {project.description}
+                    </p>
+
+                    <div class="flex flex-wrap gap-2">
+                        {project.technologies.map((tech: string) => (
+                            <span class="px-3 py-1 text-sm rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                                {tech}
+                            </span>
+                        ))}
+                    </div>
+                </article>
+            ))
+        }
+    </div>
+</div>
