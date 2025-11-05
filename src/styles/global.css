@@ -40,6 +40,16 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* Prevent transition/animation flashes before theme init */
+html:not([data-theme-init]) *,
+html:not([data-theme-init]) *::before,
+html:not([data-theme-init]) *::after {
+  -webkit-transition: none !important;
+  transition: none !important;
+  -webkit-animation: none !important;
+  animation: none !important;
+}
+
 :root {
   --radius: 0.625rem;
   --color-background: 255 255 255;    /* White */

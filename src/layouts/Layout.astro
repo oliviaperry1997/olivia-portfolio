@@ -7,25 +7,52 @@ const { pageTitle } = Astro.props;
 
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <meta name="generator" content={Astro.generator} />
-        <title>{pageTitle}</title>
-        <script is:inline>
-            // This script runs before the page renders to prevent flash
-            const theme = localStorage.getItem('theme');
-            if (theme === 'dark') {
-                document.documentElement.classList.add('dark');
-            }
-        </script>
-    </head>
-    <body class="min-h-screen flex flex-col bg-background text-foreground transition-colors">
-        <Header />
-        <main class="flex-1 pb-32">
-            <slot />
-        </main>
-        <Footer />
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+
+    <!-- Ensure native controls and UA styles align -->
+    <meta name="color-scheme" content="light dark" />
+    <!-- Address bar color on mobile; updated by the script below -->
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Critical base background to avoid white flash before CSS loads -->
+    <style is:inline>
+      html { background: #ffffff; color-scheme: light; }
+      html.dark { background: #0b0b0d; color-scheme: dark; }
+    </style>
+
+    <!-- No-flash theme initializer: runs before first paint -->
+    <script is:inline>
+      (function () {
+        try {
+          const storageKey = 'theme';
+          const stored = localStorage.getItem(storageKey);
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const theme = stored || (prefersDark ? 'dark' : 'light');
+          const root = document.documentElement;
+
+          if (theme === 'dark') {
+            root.classList.add('dark');
+            document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#0b0b0d');
+          } else {
+            root.classList.remove('dark');
+            document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#ffffff');
+          }
+          // Optional: mark that initial theme is applied
+          root.setAttribute('data-theme-init', 'true');
+        } catch {}
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen flex flex-col bg-background text-foreground transition-colors">
+    <Header />
+    <main class="flex-1 pb-32">
+      <slot />
+    </main>
+    <Footer />
+  </body>
 </html>
