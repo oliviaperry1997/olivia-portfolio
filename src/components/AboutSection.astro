@@ -64,13 +64,19 @@ const icons: Partial<Record<string, ImageMetadata>> = {
         >
             {
                 skills.map((skill: string) => (
-                    <li class="flex flex-col items-center gap-2 p-3 rounded-md bg-white/3 dark:bg-black/5">
-                        <span class="w-[64px] h-[64px] flex items-center justify-center rounded-md shrink-0 text-black">
+                    <li class="flex flex-col items-center gap-2 p-3 rounded-md bg-secondary/50 dark:bg-secondary/30 hover:bg-secondary dark:hover:bg-secondary/50 transition-colors">
+                        <span class="w-[64px] h-[64px] flex items-center justify-center rounded-md shrink-0">
                             {icons[skill] ? (
-                                <img src={icons[skill].src} alt={skill + ' logo'} width="64" height="64" class="object-contain" />
+                                <img 
+                                    src={icons[skill].src} 
+                                    alt={skill + ' logo'} 
+                                    width="64" 
+                                    height="64" 
+                                    class="object-contain dark:brightness-0 dark:invert transition-all" 
+                                />
                             ) : (
-                                <div class="w-16 h-16 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md">
-                                    <span class="text-xs text-gray-400">Icon<br/>Loading</span>
+                                <div class="w-16 h-16 flex items-center justify-center border-2 border-dashed border-border dark:border-border/50 rounded-md">
+                                    <span class="text-xs text-muted-foreground">Icon<br/>Loading</span>
                                 </div>
                             )}
                         </span>

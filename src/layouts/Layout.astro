@@ -13,10 +13,17 @@ const { pageTitle } = Astro.props;
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="generator" content={Astro.generator} />
         <title>{pageTitle}</title>
+        <script is:inline>
+            // This script runs before the page renders to prevent flash
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+        </script>
     </head>
-    <body class="min-h-screen flex flex-col">
+    <body class="min-h-screen flex flex-col bg-background text-foreground transition-colors">
         <Header />
-        <main class="flex-1">
+        <main class="flex-1 pb-32">
             <slot />
         </main>
         <Footer />
