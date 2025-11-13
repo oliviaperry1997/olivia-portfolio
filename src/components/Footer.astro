@@ -9,18 +9,14 @@ const { company = "Olivia Perry" } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
-<footer class="fixed inset-x-0 bottom-0 w-full z-40 bg-slate-900 dark:bg-slate-950 text-slate-300 dark:text-slate-400 py-8 border-t border-slate-800 dark:border-slate-700">
-    <div
-        class="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6"
-    >
-        <div class="flex items-center space-x-3">
-            <p class="text-sm text-slate-400 dark:text-slate-500 flex items-center">
-                Crafted with Astro & Tailwind
+<footer class="fixed inset-x-0 bottom-0 w-full z-40 bg-slate-900 dark:bg-slate-950 text-slate-300 dark:text-slate-400 py-4 sm:py-6 border-t border-slate-800 dark:border-slate-700">
+    <div class="container mx-auto px-4 sm:px-6">
+        <!-- Mobile Layout: Single row with compact spacing -->
+        <div class="flex flex-row items-center justify-between gap-3 sm:hidden">
+            <p class="text-xs text-slate-400 dark:text-slate-500">
+                Astro & Tailwind
             </p>
-        </div>
-
-        <div class="flex items-center space-x-4">
-            <div class="flex space-x-3">
+            <div class="flex items-center gap-3">
                 <a
                     class="text-slate-300 dark:text-slate-400 hover:text-white dark:hover:text-slate-200 transition-colors"
                     href="https://github.com/oliviaperry1997"
@@ -28,21 +24,39 @@ const year = new Date().getFullYear();
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    <!-- GitHub -->
-                    <svg
-                        class="w-5 h-5"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        aria-hidden="true"
-                    >
-                        <path
-                            d="M12 .296a12 12 0 00-3.797 23.4c.6.112.82-.26.82-.577 0-.285-.01-1.04-.016-2.043-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.744.083-.729.083-.729 1.205.085 1.84 1.238 1.84 1.238 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.76-1.605-2.665-.304-5.466-1.333-5.466-5.93 0-1.31.467-2.381 1.235-3.22-.124-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.48 11.48 0 016.004 0c2.29-1.552 3.297-1.23 3.297-1.23.654 1.653.243 2.873.12 3.176.77.839 1.234 1.91 1.234 3.22 0 4.61-2.803 5.624-5.475 5.92.43.372.815 1.103.815 2.222 0 1.604-.015 2.897-.015 3.293 0 .32.216.694.825.576A12.003 12.003 0 0012 .296z"
-                        ></path>
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 .296a12 12 0 00-3.797 23.4c.6.112.82-.26.82-.577 0-.285-.01-1.04-.016-2.043-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.744.083-.729.083-.729 1.205.085 1.84 1.238 1.84 1.238 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.76-1.605-2.665-.304-5.466-1.333-5.466-5.93 0-1.31.467-2.381 1.235-3.22-.124-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.48 11.48 0 016.004 0c2.29-1.552 3.297-1.23 3.297-1.23.654 1.653.243 2.873.12 3.176.77.839 1.234 1.91 1.234 3.22 0 4.61-2.803 5.624-5.475 5.92.43.372.815 1.103.815 2.222 0 1.604-.015 2.897-.015 3.293 0 .32.216.694.825.576A12.003 12.003 0 0012 .296z"></path>
                     </svg>
                 </a>
+                <div class="text-xs text-slate-500 dark:text-slate-600">&copy; {year}</div>
+            </div>
+        </div>
+
+        <!-- Desktop Layout: Original two-column layout -->
+        <div class="hidden sm:flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <p class="text-sm text-slate-400 dark:text-slate-500 flex items-center">
+                    Crafted with Astro & Tailwind
+                </p>
             </div>
 
-            <div class="text-sm text-slate-500 dark:text-slate-600">&copy; {year} {company}</div>
+            <div class="flex items-center space-x-4">
+                <div class="flex space-x-3">
+                    <a
+                        class="text-slate-300 dark:text-slate-400 hover:text-white dark:hover:text-slate-200 transition-colors"
+                        href="https://github.com/oliviaperry1997"
+                        aria-label="GitHub"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M12 .296a12 12 0 00-3.797 23.4c.6.112.82-.26.82-.577 0-.285-.01-1.04-.016-2.043-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.744.083-.729.083-.729 1.205.085 1.84 1.238 1.84 1.238 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.76-1.605-2.665-.304-5.466-1.333-5.466-5.93 0-1.31.467-2.381 1.235-3.22-.124-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.48 11.48 0 016.004 0c2.29-1.552 3.297-1.23 3.297-1.30.654 1.653.243 2.873.12 3.176.77.839 1.234 1.91 1.234 3.22 0 4.61-2.803 5.624-5.475 5.92.43.372.815 1.103.815 2.222 0 1.604-.015 2.897-.015 3.293 0 .32.216.694.825.576A12.003 12.003 0 0012 .296z"></path>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="text-sm text-slate-500 dark:text-slate-600">&copy; {year} {company}</div>
+            </div>
         </div>
     </div>
 </footer>
