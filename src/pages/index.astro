@@ -14,8 +14,8 @@ const pageTitle = 'Olivia Perry - Junior Full-Stack Web Developer';
 
 		<!-- Scrollable Content (invisible spacer only) -->
 		<div class="scrollable-content relative z-20">
-			<!-- Spacer to allow scroll and trigger transitions -->
-			<div class="spacer" style="height: 200vh;"></div>
+			<!-- Spacer to allow scroll and trigger transitions (height set dynamically) -->
+			<div class="spacer"></div>
 		</div>
 
 		<!-- Circle Mask Overlay -->
@@ -25,8 +25,8 @@ const pageTitle = 'Olivia Perry - Junior Full-Stack Web Developer';
 			</div>
 			<!-- Content circle -->
 			<div class="circle-content absolute inset-0 overflow-hidden">
-				<div id="projects-container" class="projects-container absolute w-full h-full" style="background: rgb(var(--color-background)); min-height: 200vh;">
-					<div style="padding-top: 48px;">
+				<div id="projects-container" class="projects-container absolute w-full" style="background: rgb(var(--color-background));">
+					<div id="projects-content" style="padding-top: 48px; padding-bottom: 50vh;">
 						<Projects></Projects>
 					</div>
 				</div>
@@ -93,6 +93,8 @@ const pageTitle = 'Olivia Perry - Junior Full-Stack Web Developer';
 			transition: transform 0.1s ease-out;
 			pointer-events: auto;
 		}
+
+
 	</style>
 
 	<script>
@@ -120,12 +122,75 @@ const pageTitle = 'Olivia Perry - Junior Full-Stack Web Developer';
 		let scrollThreshold = window.innerHeight * 0.3; // Start transition at 30% scroll
 		let maxScroll = window.innerHeight; // Complete transition at 100vh scroll
 
+		// Function to calculate dynamic heights based on content
+		function calculateDynamicHeights() {
+			const projectsContent = document.getElementById('projects-content');
+			const spacer = document.querySelector('.spacer');
+			
+			if (projectsContent && spacer) {
+				// Get the actual height of the projects content
+				const contentHeight = projectsContent.scrollHeight;
+				
+				// Ensure transition completes properly + reasonable content scroll
+				const contentBeyondViewport = Math.max(0, contentHeight - window.innerHeight * 0.8);
+				
+				// Minimum scroll needed: transition completion + generous content scroll for medium screens
+				const minScrollNeeded = maxScroll + window.innerHeight * 0.6; // Extra 60vh past transition
+				const contentScrollNeeded = maxScroll + contentBeyondViewport + 100;
+				
+				// Use the larger of the two to ensure transition completes and content is accessible
+				const totalScrollNeeded = Math.max(minScrollNeeded, contentScrollNeeded);
+				
+				// Update spacer height dynamically
+				spacer.style.height = `${totalScrollNeeded}px`;
+				
+				// Projects container just needs to cover the content
+				const projectsContainer = document.getElementById('projects-container');
+				if (projectsContainer) {
+					const containerHeight = contentHeight + 200; // Bit more buffer for background
+					projectsContainer.style.minHeight = `${containerHeight}px`;
+				}
+			}
+		}
+
 		function updateTransition() {
 			if (!circleContent || !heroSection) return;
 			
 			const scrollY = window.scrollY;
 			const circleBorder = document.getElementById('circle-border');
 			const projectsContainer = document.getElementById('projects-container');
+			const isMobile = window.innerWidth < 640; // Only phones get simplified version
+			
+			// On mobile phones, use simpler fade transition instead of circle
+			if (isMobile) {
+				if (scrollY <= scrollThreshold) {
+					heroSection.style.opacity = '1';
+					circleContent.style.clipPath = 'circle(0% at 50% 50%)';
+					if (circleBorder) circleBorder.style.clipPath = 'circle(0% at 50% 50%)';
+				} else if (scrollY >= maxScroll) {
+					heroSection.style.opacity = '0';
+					circleContent.style.clipPath = 'circle(150% at 50% 50%)';
+					if (circleBorder) circleBorder.style.clipPath = 'circle(150% at 50% 50%)';
+					
+					if (projectsContainer) {
+						const scrollOffset = scrollY - maxScroll;
+						projectsContainer.style.transform = `translateY(-${scrollOffset}px)`;
+					}
+				} else {
+					// Simple fade transition for mobile
+					const progress = (scrollY - scrollThreshold) / (maxScroll - scrollThreshold);
+					heroSection.style.opacity = `${1 - progress}`;
+					const radius = progress * 150;
+					const borderRadius = radius + 1; // Thin border for mobile
+					circleContent.style.clipPath = `circle(${radius}% at 50% 50%)`;
+					if (circleBorder) circleBorder.style.clipPath = `circle(${borderRadius}% at 50% 50%)`;
+					
+					if (projectsContainer) {
+						projectsContainer.style.transform = 'translateY(0)';
+					}
+				}
+				return;
+			}
 			
 			if (scrollY <= scrollThreshold) {
 				// Before transition zone - show hero fully
@@ -206,11 +271,13 @@ const pageTitle = 'Olivia Perry - Junior Full-Stack Web Developer';
 		window.addEventListener('resize', () => {
 			scrollThreshold = window.innerHeight * 0.3;
 			maxScroll = window.innerHeight;
+			calculateDynamicHeights();
 			updateTransition();
 		});
 
 		// Initial setup
 		document.addEventListener('DOMContentLoaded', () => {
+			calculateDynamicHeights();
 			updateTransition();
 		});
 	</script>
