@@ -128,8 +128,19 @@ const pageTitle = 'Olivia Perry - Junior Full-Stack Web Developer';
 			const spacer = document.querySelector('.spacer');
 			
 			if (projectsContent && spacer) {
-				// Get the actual height of the projects content
-				const contentHeight = projectsContent.scrollHeight;
+				// Force a reflow to ensure accurate measurements in Safari
+				projectsContent.offsetHeight;
+				
+				// Get the actual height of the projects content with Safari fallback
+				let contentHeight = projectsContent.scrollHeight;
+				
+				// Safari fallback: if scrollHeight seems too small, recalculate
+				if (contentHeight < 500) { // Reasonable minimum for projects content
+					setTimeout(() => {
+						calculateDynamicHeights(); // Retry after a short delay
+					}, 300);
+					return;
+				}
 				
 				// Ensure transition completes properly + reasonable content scroll
 				const contentBeyondViewport = Math.max(0, contentHeight - window.innerHeight * 0.8);
@@ -141,7 +152,7 @@ const pageTitle = 'Olivia Perry - Junior Full-Stack Web Developer';
 				// Use the larger of the two to ensure transition completes and content is accessible
 				const totalScrollNeeded = Math.max(minScrollNeeded, contentScrollNeeded);
 				
-				// Update spacer height dynamically
+				// Update spacer height dynamically with Safari-safe approach
 				spacer.style.height = `${totalScrollNeeded}px`;
 				
 				// Projects container just needs to cover the content
@@ -150,6 +161,8 @@ const pageTitle = 'Olivia Perry - Junior Full-Stack Web Developer';
 					const containerHeight = contentHeight + 200; // Bit more buffer for background
 					projectsContainer.style.minHeight = `${containerHeight}px`;
 				}
+				
+				console.log('Dynamic heights calculated:', { contentHeight, totalScrollNeeded, containerHeight: contentHeight + 200 });
 			}
 		}
 
@@ -275,10 +288,20 @@ const pageTitle = 'Olivia Perry - Junior Full-Stack Web Developer';
 			updateTransition();
 		});
 
-		// Initial setup
+		// Initial setup with Safari-specific timing fixes
 		document.addEventListener('DOMContentLoaded', () => {
-			calculateDynamicHeights();
-			updateTransition();
+			// Safari needs additional time for DOM to be fully ready
+			setTimeout(() => {
+				calculateDynamicHeights();
+				updateTransition();
+			}, 100);
+		});
+
+		// Also run on window load as a fallback for Safari
+		window.addEventListener('load', () => {
+			setTimeout(() => {
+				calculateDynamicHeights();
+			}, 200);
 		});
 	</script>
 </Layout>
