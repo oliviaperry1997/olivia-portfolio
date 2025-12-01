@@ -154,7 +154,7 @@ const pageTitle = "Olivia Perry - Junior Full-Stack Web Developer";
                 }
 
                 const footer = document.querySelector("footer");
-                const footerHeight = footer ? footer.offsetHeight : 100; // Fallback to 100px
+                const footerHeight = footer ? footer.offsetHeight : 150; // Fallback to 150px
 
                 // Ensure transition completes properly + reasonable content scroll
                 const contentBeyondViewport = Math.max(
@@ -165,13 +165,13 @@ const pageTitle = "Olivia Perry - Junior Full-Stack Web Developer";
                 // Check if this is a tablet/medium screen that needs extra scroll range
                 const isTablet =
                     window.innerWidth >= 640 && window.innerWidth <= 1024;
-                const extraScrollMultiplier = isTablet ? 1.0 : 0.6; // Tablets need more scroll range
+                const extraScrollMultiplier = isTablet ? 1.5 : 1.0; // Tablets need more scroll range
 
                 // Minimum scroll needed: transition completion + screen-appropriate content scroll
                 const minScrollNeeded =
                     maxScroll + window.innerHeight * extraScrollMultiplier;
                 const contentScrollNeeded =
-                    maxScroll + contentBeyondViewport + 100 + footerHeight;
+                    maxScroll + contentBeyondViewport + 150 + footerHeight;
 
                 // Use the larger of the two to ensure transition completes and content is accessible
                 const totalScrollNeeded = Math.max(
