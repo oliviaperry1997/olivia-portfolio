@@ -1,0 +1,319 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Projects from '../components/Projects.astro';
+const pageTitle = 'Olivia Perry - Junior Full-Stack Web Developer';
+---
+
+<Layout pageTitle={pageTitle}>
+	<div class="scroll-container relative">
+		<!-- Hero Section (Fixed Background) -->
+		<section id="hero-section" class="hero-section fixed inset-0 z-10">
+			<Hero></Hero>
+		</section>
+
+		<!-- Scrollable Content (invisible spacer only) -->
+		<div class="scrollable-content relative z-20">
+			<!-- Spacer to allow scroll and trigger transitions (height set dynamically) -->
+			<div class="spacer"></div>
+		</div>
+
+		<!-- Circle Mask Overlay -->
+		<div id="circle-mask" class="circle-mask fixed inset-0 z-40 pointer-events-none">
+			<!-- Border circle (slightly larger) -->
+			<div id="circle-border" class="circle-border absolute inset-0">
+			</div>
+			<!-- Content circle -->
+			<div class="circle-content absolute inset-0 overflow-hidden">
+				<div id="projects-container" class="projects-container absolute w-full" style="background: rgb(var(--color-background));">
+					<div id="projects-content" style="padding-top: 48px; padding-bottom: 50vh;">
+						<Projects></Projects>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<style>
+		.scroll-container {
+			position: relative;
+			overflow-x: hidden;
+		}
+
+		.hero-section {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100vh;
+			z-index: 10;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.scrollable-content {
+			position: relative;
+			z-index: 20;
+		}
+
+		.circle-mask {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100vh;
+			z-index: 40;
+			pointer-events: none;
+		}
+
+		.circle-content {
+			clip-path: circle(0px at 50% 50%);
+			transition: clip-path 0.1s ease-out;
+			background: var(--color-background);
+			z-index: 2;
+			pointer-events: auto;
+		}
+
+		/* Separate border element */
+		.circle-border {
+			clip-path: circle(0px at 50% 50%);
+			transition: clip-path 0.1s ease-out;
+			background: rgb(var(--color-foreground)); /* Uses exact text color from CSS variables */
+			z-index: 1;
+		}
+
+		/* Projects container that scrolls within the circle */
+		.projects-container {
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			transform: translateY(0);
+			transition: transform 0.1s ease-out;
+			pointer-events: auto;
+		}
+
+
+	</style>
+
+	<script>
+		// @ts-nocheck
+		let mouseX = window.innerWidth / 2;
+		let mouseY = window.innerHeight / 2;
+		let isTransitioning = false;
+
+		// Track mouse position
+		document.addEventListener('mousemove', (e) => {
+			mouseX = e.clientX;
+			mouseY = e.clientY;
+		});
+
+		// Touch support for mobile
+		document.addEventListener('touchmove', (e) => {
+			if (e.touches.length > 0) {
+				mouseX = e.touches[0].clientX;
+				mouseY = e.touches[0].clientY;
+			}
+		});
+
+		const circleContent = document.querySelector('.circle-content');
+		const heroSection = document.getElementById('hero-section');
+		let scrollThreshold = window.innerHeight * 0.3; // Start transition at 30% scroll
+		let maxScroll = window.innerHeight; // Complete transition at 100vh scroll
+
+		// Function to calculate dynamic heights based on content
+		function calculateDynamicHeights() {
+			const projectsContent = document.getElementById('projects-content');
+			const spacer = document.querySelector('.spacer');
+			
+			if (projectsContent && spacer) {
+				// Force a reflow to ensure accurate measurements in Safari
+				projectsContent.offsetHeight;
+				
+				// Get the actual height of the projects content with Safari fallback
+				let contentHeight = projectsContent.scrollHeight;
+				
+				// Safari fallback: if scrollHeight seems too small, recalculate
+				if (contentHeight < 500) { // Reasonable minimum for projects content
+					setTimeout(() => {
+						calculateDynamicHeights(); // Retry after a short delay
+					}, 300);
+					return;
+				}
+				
+				// Ensure transition completes properly + reasonable content scroll
+				const contentBeyondViewport = Math.max(0, contentHeight - window.innerHeight * 0.8);
+				
+				// Check if this is a tablet/medium screen that needs extra scroll range
+				const isTablet = window.innerWidth >= 640 && window.innerWidth <= 1024;
+				const extraScrollMultiplier = isTablet ? 1.0 : 0.6; // Tablets need more scroll range
+				
+				// Minimum scroll needed: transition completion + screen-appropriate content scroll
+				const minScrollNeeded = maxScroll + window.innerHeight * extraScrollMultiplier;
+				const contentScrollNeeded = maxScroll + contentBeyondViewport + 100;
+				
+				// Use the larger of the two to ensure transition completes and content is accessible
+				const totalScrollNeeded = Math.max(minScrollNeeded, contentScrollNeeded);
+				
+				// Update spacer height dynamically with Safari-safe approach
+				spacer.style.height = `${totalScrollNeeded}px`;
+				
+				// Projects container just needs to cover the content
+				const projectsContainer = document.getElementById('projects-container');
+				if (projectsContainer) {
+					const containerHeight = contentHeight + 200; // Bit more buffer for background
+					projectsContainer.style.minHeight = `${containerHeight}px`;
+				}
+				
+				console.log('Dynamic heights calculated:', { contentHeight, totalScrollNeeded, containerHeight: contentHeight + 200 });
+			}
+		}
+
+		function updateTransition() {
+			if (!circleContent || !heroSection) return;
+			
+			const scrollY = window.scrollY;
+			const circleBorder = document.getElementById('circle-border');
+			const projectsContainer = document.getElementById('projects-container');
+			const isMobile = window.innerWidth < 640; // Only phones get simplified version
+			const isTablet = window.innerWidth >= 640 && window.innerWidth <= 1024; // Tablets use full animation but need tweaks
+			
+			// On mobile phones, use simpler fade transition instead of circle
+			if (isMobile) {
+				if (scrollY <= scrollThreshold) {
+					heroSection.style.opacity = '1';
+					circleContent.style.clipPath = 'circle(0% at 50% 50%)';
+					if (circleBorder) circleBorder.style.clipPath = 'circle(0% at 50% 50%)';
+				} else if (scrollY >= maxScroll) {
+					heroSection.style.opacity = '0';
+					circleContent.style.clipPath = 'circle(150% at 50% 50%)';
+					if (circleBorder) circleBorder.style.clipPath = 'circle(150% at 50% 50%)';
+					
+					if (projectsContainer) {
+						const scrollOffset = scrollY - maxScroll;
+						projectsContainer.style.transform = `translateY(-${scrollOffset}px)`;
+					}
+				} else {
+					// Simple fade transition for mobile
+					const progress = (scrollY - scrollThreshold) / (maxScroll - scrollThreshold);
+					heroSection.style.opacity = `${1 - progress}`;
+					const radius = progress * 150;
+					const borderRadius = radius + 1; // Thin border for mobile
+					circleContent.style.clipPath = `circle(${radius}% at 50% 50%)`;
+					if (circleBorder) circleBorder.style.clipPath = `circle(${borderRadius}% at 50% 50%)`;
+					
+					if (projectsContainer) {
+						projectsContainer.style.transform = 'translateY(0)';
+					}
+				}
+				return;
+			}
+			
+			if (scrollY <= scrollThreshold) {
+				// Before transition zone - show hero fully
+				const contentClipPath = `circle(0px at ${mouseX}px ${mouseY}px)`;
+				const borderClipPath = `circle(0px at ${mouseX}px ${mouseY}px)`;
+				
+				circleContent.style.clipPath = contentClipPath;
+				if (circleBorder) circleBorder.style.clipPath = borderClipPath;
+				heroSection.style.opacity = '1';
+				isTransitioning = false;
+			} else if (scrollY >= maxScroll) {
+				// After transition zone - show projects fully and enable scrolling
+				const contentClipPath = `circle(150% at ${mouseX}px ${mouseY}px)`;
+				const borderClipPath = `circle(150% at ${mouseX}px ${mouseY}px)`;
+				
+				circleContent.style.clipPath = contentClipPath;
+				if (circleBorder) circleBorder.style.clipPath = borderClipPath;
+				heroSection.style.opacity = '0';
+				
+				// Enable normal scrolling for projects content
+				if (projectsContainer) {
+					const scrollOffset = scrollY - maxScroll;
+					projectsContainer.style.transform = `translateY(-${scrollOffset}px)`;
+				}
+				
+				isTransitioning = false;
+			} else {
+				// In transition zone - animate circle
+				isTransitioning = true;
+				heroSection.style.opacity = '1';
+				
+				const progress = (scrollY - scrollThreshold) / (maxScroll - scrollThreshold);
+				
+				// Calculate radius with tablet-specific adjustments
+				let maxRadius = Math.sqrt(window.innerWidth ** 2 + window.innerHeight ** 2);
+				if (isTablet) {
+					// Tablets need slightly larger radius to ensure full coverage
+					maxRadius = maxRadius * 1.1;
+				}
+				
+				const radius = progress * maxRadius;
+				const borderRadius = radius + 4; // 4px border thickness
+				
+				const contentClipPath = `circle(${radius}px at ${mouseX}px ${mouseY}px)`;
+				const borderClipPath = `circle(${borderRadius}px at ${mouseX}px ${mouseY}px)`;
+				
+				circleContent.style.clipPath = contentClipPath;
+				if (circleBorder) circleBorder.style.clipPath = borderClipPath;
+				
+				// Keep projects at top during transition
+				if (projectsContainer) {
+					projectsContainer.style.transform = 'translateY(0)';
+				}
+			}
+		}
+
+		// Throttled handlers for better performance
+		let scrollTicking = false;
+		let mouseTicking = false;
+
+		function handleScroll() {
+			if (!scrollTicking) {
+				requestAnimationFrame(() => {
+					updateTransition();
+					scrollTicking = false;
+				});
+				scrollTicking = true;
+			}
+		}
+
+		function handleMouseMove() {
+			if (!mouseTicking && isTransitioning) {
+				requestAnimationFrame(() => {
+					updateTransition();
+					mouseTicking = false;
+				});
+				mouseTicking = true;
+			}
+		}
+
+		// Initialize and bind events
+		window.addEventListener('scroll', handleScroll);
+		window.addEventListener('mousemove', handleMouseMove);
+		window.addEventListener('touchmove', handleMouseMove);
+		window.addEventListener('resize', () => {
+			scrollThreshold = window.innerHeight * 0.3;
+			maxScroll = window.innerHeight;
+			calculateDynamicHeights();
+			updateTransition();
+		});
+
+		// Initial setup with Safari-specific timing fixes
+		document.addEventListener('DOMContentLoaded', () => {
+			// Safari needs additional time for DOM to be fully ready
+			setTimeout(() => {
+				calculateDynamicHeights();
+				updateTransition();
+			}, 100);
+		});
+
+		// Also run on window load as a fallback for Safari
+		window.addEventListener('load', () => {
+			setTimeout(() => {
+				calculateDynamicHeights();
+			}, 200);
+		});
+	</script>
+</Layout>
