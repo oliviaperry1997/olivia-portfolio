@@ -1,4 +1,5 @@
 ---
+// Component script (empty for this static component)
 ---
 
 <div class="max-w-3xl mx-auto px-4 py-16">
@@ -9,72 +10,76 @@
         </p>
     </div>
 
-    <form class="space-y-6">
-        <div>
-            <label for="name" class="block text-sm font-medium mb-2">
-                Name
-            </label>
-            <input
-                type="text"
-                id="name"
-                name="name"
-                required
-                class="w-full px-4 py-2 border border-input rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring transition-all"
-                placeholder="Your name"
-            />
+    <div class="rounded-xl border border-border bg-card p-6 sm:p-8 shadow-sm">
+        <div class="flex flex-col gap-2 mb-6">
+            <h3 class="text-xl font-semibold">Contact Details</h3>
+            <p class="text-muted-foreground">
+                The fastest way to reach me is email. I typically respond within 1-2 business days.
+            </p>
         </div>
 
-        <div>
-            <label for="email" class="block text-sm font-medium mb-2">
-                Email
-            </label>
-            <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                class="w-full px-4 py-2 border border-input rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring transition-all"
-                placeholder="your.email@example.com"
-            />
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <a
+                href="mailto:oliviaperry1997@proton.me"
+                class="group rounded-lg border border-border bg-background/50 p-4 hover:bg-background transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
+            >
+                <div class="text-sm font-medium mb-1">Email</div>
+                <div class="text-muted-foreground group-hover:text-foreground transition-colors break-all">
+                    oliviaperry1997@proton.me
+                </div>
+            </a>
+
+            <a
+                href="https://www.linkedin.com/in/olivia-perry-858936395/"
+                class="group rounded-lg border border-border bg-background/50 p-4 hover:bg-background transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <div class="text-sm font-medium mb-1">LinkedIn</div>
+                <div class="text-muted-foreground group-hover:text-foreground transition-colors">
+                    Connect and message me
+                </div>
+            </a>
+
+            <a
+                href="https://github.com/oliviaperry1997"
+                class="group rounded-lg border border-border bg-background/50 p-4 hover:bg-background transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <div class="text-sm font-medium mb-1">GitHub</div>
+                <div class="text-muted-foreground group-hover:text-foreground transition-colors">
+                    View projects and code
+                </div>
+            </a>
+
+            <div class="rounded-lg border border-border bg-background/50 p-4">
+                <div class="text-sm font-medium mb-1">Tech Stack</div>
+                <ul class="text-muted-foreground text-sm space-y-1">
+                    <li>Frontend: HTML5, CSS3, JavaScript (ES6), React, Astro</li>
+                    <li>Backend: Node.js, Express</li>
+                    <li>Database: PostgreSQL</li>
+                </ul>
+            </div>
         </div>
 
-        <div>
-            <label for="subject" class="block text-sm font-medium mb-2">
-                Subject
-            </label>
-            <input
-                type="text"
-                id="subject"
-                name="subject"
-                required
-                class="w-full px-4 py-2 border border-input rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring transition-all"
-                placeholder="What's this about?"
-            />
+        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+            <a
+                href="mailto:oliviaperry1997@proton.me"
+                class="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all"
+            >
+                Email Me
+            </a>
+            <a
+                href="/projects"
+                class="inline-flex items-center justify-center px-6 py-3 border border-border bg-background rounded-lg hover:bg-muted/40 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all"
+            >
+                See Recent Work
+            </a>
         </div>
+    </div>
 
-        <div>
-            <label for="message" class="block text-sm font-medium mb-2">
-                Message
-            </label>
-            <textarea
-                id="message"
-                name="message"
-                rows="6"
-                required
-                class="w-full px-4 py-2 border border-input rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring transition-all resize-y"
-                placeholder="Tell me about your project..."
-            ></textarea>
-        </div>
-
-        <button
-            type="submit"
-            class="w-full sm:w-auto px-6 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all"
-        >
-            Send Message
-        </button>
-    </form>
-
-    <div class="mt-12 pt-12 border-t border-border">
+    <div class="mt-12 pt-12 pb-12 border-t border-border">
         <h3 class="text-xl font-semibold mb-4">Other Ways to Connect</h3>
         <div class="flex flex-col sm:flex-row gap-4 text-muted-foreground">
             <a href="mailto:oliviaperry1997@proton.me" class="hover:text-foreground transition-colors">
